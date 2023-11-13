@@ -131,18 +131,13 @@ function Widget() {
     };
 
     const currentStyle = sizeStyles[size];
+    const headerGradient = `linear-gradient(135deg, ${headerColor}, #FFFFFF)`;
+
 
     return (
-        <AutoLayout direction={'vertical'} cornerRadius={{topLeft: 5, topRight: 5}} width={currentStyle.widget.width}
-                    height={currentStyle.widget.height}>
-            <AutoLayout direction={'horizontal'} padding={{horizontal: 10, vertical: 7}} fill={headerColor}
-                        horizontalAlignItems={'start'} verticalAlignItems={'center'} width={'fill-parent'}
-                        height={currentStyle.rowHeight}
-            >
-                <Input placeholder='Table Name' value={table.name} fontFamily={currentStyle.text.fontFamily}
-                       fontSize={currentStyle.text.fontSize}
-                       fontWeight={'semi-bold'} lineHeight={'130%'}
-                       fill={'#FFFFFF'} onTextEditEnd={({characters}) => changeTableName(characters)}/>
+        <AutoLayout direction={'vertical'} cornerRadius={10} width={currentStyle.widget.width} height={currentStyle.widget.height} stroke="#E1E1E1" strokeWidth={2}>
+            <AutoLayout direction={'horizontal'} padding={10} fill={headerColor} cornerRadius={{ topLeft: 8, topRight: 8 }} horizontalAlignItems={'start'} verticalAlignItems={'center'} width={'fill-parent'} height={currentStyle.rowHeight}>
+                <Input placeholder='Table Name' value={table.name} fontFamily={currentStyle.text.fontFamily} fontSize={currentStyle.text.fontSize * 1.2} fontWeight={'semi-bold'} fill={'#FFFFFF'} onTextEditEnd={({characters}) => changeTableName(characters)} />
             </AutoLayout>
             <AutoLayout direction='vertical' width={'fill-parent'} stroke={'#CCCCCC'} strokeWidth={1}
                         strokeAlign={'inside'}>
