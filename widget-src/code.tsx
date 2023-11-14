@@ -7,6 +7,18 @@ function Widget() {
         columns: [],
     });
 
+    const colorByType = {
+        string: '#28A745', // Verde para cadenas de texto
+        number: '#007BFF', // Azul para números
+        boolean: '#FFC107', // Amarillo para booleanos
+        date: '#DC3545', // Rojo para fechas
+        object: '#6610F2', // Púrpura para objetos
+        array: '#17A2B8', // Cyan para arrays
+        function: '#FD7E14', // Naranja para funciones
+        undefined: '#6C757D', // Gris para indefinido
+        null: '#343A40', // Negro para valores nulos
+    };
+
     const [size, setSize] = useSyncedState('size', 'medium'); // Estado para el tamaño
     const [headerColor, setHeaderColor] = useSyncedState('headerColor', '#2CD997'); // Estado para el color del encabezado
 
@@ -101,9 +113,6 @@ function Widget() {
         });
     };
 
-    const fieldWidthPercentage = 0.3; // 50% del espacio disponible
-    const typeWidthPercentage = 0.3; // 25% del espacio disponible
-    const descriptionWidthPercentage = 0.4; // 25% del espacio disponible
 
     const sizeStyles = {
         small: {
@@ -149,6 +158,11 @@ function Widget() {
     };
 
     const currentStyle = sizeStyles[size];
+    const getColorForType = (type) => {
+        // Transformar el tipo a minúsculas para hacer la correspondencia
+        const typeInLowerCase = type.toLowerCase();
+        return colorByType[typeInLowerCase] || '#000000'; // Color por defecto si no se encuentra
+    };
 
 
     return (
@@ -183,9 +197,12 @@ function Widget() {
                                width={currentStyle.fieldWidth}
                                fill={'#000000'}
                                onTextEditEnd={({characters}) => changeColumnName(index, characters)}/>
-                        <Input placeholder='Type' value={column.type} fontFamily={currentStyle.text.fontFamily}
+                        <Input placeholder='Type' value={column.type}
+                               fontFamily={currentStyle.text.fontFamily}
                                fontSize={currentStyle.text.fontSize}
-                               fontWeight={currentStyle.text.fontWeight} width={currentStyle.typeWidth} fill={'#F17400'}
+                               fontWeight={currentStyle.text.fontWeight}
+                               width={currentStyle.typeWidth}
+                               fill={getColorForType(column.type)}
                                onTextEditEnd={({characters}) => changeColumnType(index, characters)}/>
                         <Input placeholder='Description' value={column.description}
                                fontFamily={currentStyle.text.fontFamily}
