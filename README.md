@@ -42,10 +42,8 @@ Automatically fixes issues identified by ESLint.
 Formats code using Prettier.
 
 ## Contributions
-Contributions are welcome. Please read the contribution guidelines before submitting pull requests.
+Contributions are welcome.
 
 ## License
-This project is distributed under the [Insert License Type] license.
+This project is distributed under the MIT license.
 
-## Contact
-For questions and support, please contact [Insert contact information or link to the issues section].
