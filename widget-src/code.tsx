@@ -1,83 +1,89 @@
-const {widget} = figma
-const {colorMapToOptions, useSyncedState, usePropertyMenu, AutoLayout, Input} = widget
+const { widget } = figma;
+const { colorMapToOptions, useSyncedState, usePropertyMenu, AutoLayout, Input } = widget;
 
 function Widget() {
+    const defaultColumn = { name: '', type: '', description: '' };
+    // State for table structure with name and columns
     const [table, setTable] = useSyncedState('tables', {
         name: '',
-        columns: [],
+        columns: [defaultColumn],
     });
-
+    // Color mapping for different data types
     const colorByType = {
-        string: '#28A745', // Verde para cadenas de texto
-        number: '#007BFF', // Azul para números
-        boolean: '#FFC107', // Amarillo para booleanos
-        date: '#DC3545', // Rojo para fechas
-        object: '#6610F2', // Púrpura para objetos
-        array: '#17A2B8', // Cyan para arrays
-        function: '#FD7E14', // Naranja para funciones
-        undefined: '#6C757D', // Gris para indefinido
-        null: '#343A40', // Negro para valores nulos
+        string: '#28A745', // Green for strings
+        number: '#007BFF', // Blue for numbers
+        boolean: '#FFC107', // Yellow for booleans
+        date: '#DC3545', // Red for dates
+        object: '#6610F2', // Purple for objects
+        array: '#17A2B8', // Cyan for arrays
+        function: '#FD7E14', // Orange for functions
+        undefined: '#6C757D', // Grey for undefined
+        null: '#343A40', // Black for null
     };
 
-    const [size, setSize] = useSyncedState('size', 'medium'); // Estado para el tamaño
-    const [headerColor, setHeaderColor] = useSyncedState('headerColor', '#2CD997'); // Estado para el color del encabezado
+    // State for widget size and header color
+    const [size, setSize] = useSyncedState('size', 'medium');
+    const [headerColor, setHeaderColor] = useSyncedState('headerColor', '#343A40');
 
+    // SVG icon for adding a column
     const addColumnIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="4" width="4" height="16" fill="#333" /><rect x="4" y="10" width="16" height="4" fill="#333" /></svg>`;
 
+    // Property menu setup for widget customization
     usePropertyMenu([
+        // Dropdown for selecting widget size
         {
             itemType: 'dropdown',
             propertyName: 'size',
             tooltip: 'Size',
             options: [
-                {option: 'small', label: 'Small'},
-                {option: 'medium', label: 'Medium'},
-                {option: 'large', label: 'Large'},
-                {option: 'xlarge', label: 'Extra Large'},
-                {option: 'xxlarge', label: 'XX Large'},
+                { option: 'small', label: 'Small' },
+                { option: 'medium', label: 'Medium' },
+                { option: 'large', label: 'Large' },
+                { option: 'xlarge', label: 'Extra Large' },
+                { option: 'xxlarge', label: 'XX Large' },
             ],
             selectedOption: size,
         },
-        {
-            itemType: 'separator',
-        },
+        { itemType: 'separator' },
+        // Color selector for header
         {
             itemType: 'color-selector',
             tooltip: 'Header Color',
             propertyName: 'headerColor',
             options: [
                 ...colorMapToOptions(figma.constants.colors.figJamBase),
-                {option: '#f5427b', tooltip: 'Hot Pink'}
+                { option: '#f5427b', tooltip: 'Hot Pink' },
             ],
             selectedOption: headerColor,
         },
-        {
-            itemType: 'separator',
-        },
+        { itemType: 'separator' },
+        // Action for adding a new column
         {
             itemType: 'action',
             propertyName: 'addColumn',
             tooltip: 'Add Column',
             icon: addColumnIcon,
         },
-    ], ({propertyName, propertyValue}) => {
+    ], ({ propertyName, propertyValue }) => {
+        // Handling property menu actions
         if (propertyName === 'addColumn') {
             addColumn();
         } else if (propertyName === 'size') {
             setSize(propertyValue);
-        }
-        if (propertyName === 'headerColor') {
+        } else if (propertyName === 'headerColor') {
             setHeaderColor(propertyValue);
         }
     });
 
+    // Function to add a new column
     const addColumn = () => {
         setTable({
             ...table,
-            columns: [...table.columns, {name: '', type: '', description: ''}]
+            columns: [...table.columns, { name: '', type: '', description: '' }]
         });
     };
 
+    // Function to remove a column
     const removeColumn = (index) => {
         setTable({
             ...table,
@@ -85,36 +91,35 @@ function Widget() {
         });
     };
 
+    // Functions to update column attributes
     const changeColumnName = (index, name) => {
         setTable({
             ...table,
-            columns: table.columns.map((column, i) => i === index ? {...column, name} : column)
+            columns: table.columns.map((column, i) => i === index ? { ...column, name } : column)
         });
     };
 
     const changeColumnType = (index, type) => {
         setTable({
             ...table,
-            columns: table.columns.map((column, i) => i === index ? {...column, type} : column)
+            columns: table.columns.map((column, i) => i === index ? { ...column, type } : column)
         });
     };
 
     const changeColumnDescription = (index, description) => {
         setTable({
             ...table,
-            columns: table.columns.map((column, i) => i === index ? {...column, description} : column)
+            columns: table.columns.map((column, i) => i === index ? { ...column, description } : column)
         });
     };
 
     const changeTableName = (name) => {
-        setTable({
-            ...table,
-            name,
-        });
+        setTable({ ...table, name });
     };
 
-
+    // Style settings for different widget sizes
     const sizeStyles = {
+        // Styles for 'small' size
         small: {
             widget: { width: 600, height: 'hug-contents' },
             text: { fontFamily: 'IBM Plex Mono', fontSize: 20, fontWeight: 'normal' },
@@ -123,6 +128,7 @@ function Widget() {
             fieldWidth: 280,
             padding: 30
         },
+        // Styles for 'medium' size
         medium: {
             widget: { width: 1000, height: 'hug-contents' },
             text: { fontFamily: 'IBM Plex Mono', fontSize: 27, fontWeight: 'normal' },
@@ -158,13 +164,14 @@ function Widget() {
     };
 
     const currentStyle = sizeStyles[size];
+
+    // Function to get color based on data type
     const getColorForType = (type) => {
-        // Transformar el tipo a minúsculas para hacer la correspondencia
         const typeInLowerCase = type.toLowerCase();
-        return colorByType[typeInLowerCase] || '#000000'; // Color por defecto si no se encuentra
+        return colorByType[typeInLowerCase] || '#000000'; // Default color if not found
     };
 
-
+    // Widget layout rendering
     return (
         <AutoLayout direction={'vertical'} cornerRadius={10} width={currentStyle.widget.width} height={currentStyle.widget.height} stroke="#E1E1E1" strokeWidth={2}>
             <AutoLayout direction={'horizontal'} padding={currentStyle.padding} fill={headerColor} horizontalAlignItems={'start'} verticalAlignItems={'center'} width={'fill-parent'}>
@@ -215,7 +222,7 @@ function Widget() {
                 ) as FigmaVirtualNode<any> | FigmaDeclarativeChildren<any>[] | string | false)}
             </AutoLayout>
         </AutoLayout>
-    )
+    );
 }
 
-widget.register(Widget)
+widget.register(Widget);
