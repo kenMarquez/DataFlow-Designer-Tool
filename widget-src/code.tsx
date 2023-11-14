@@ -213,10 +213,10 @@ function Widget() {
                                onTextEditEnd={({characters}) => changeColumnType(index, characters)}/>
                         <Input placeholder='Description' value={column.description}
                                fontFamily={currentStyle.text.fontFamily}
-                               fontSize={currentStyle.text.fontSize}
+                               fontSize={currentStyle.text.fontSize * 0.8}
                                fontWeight={currentStyle.text.fontWeight}
                                width={'fill-parent'}
-                               fill={'#000000'}
+                               fill={'#343A40'}
                                onTextEditEnd={({characters}) => changeColumnDescription(index, characters)}/>
                     </AutoLayout>
                 ) as FigmaVirtualNode<any> | FigmaDeclarativeChildren<any>[] | string | false)}
