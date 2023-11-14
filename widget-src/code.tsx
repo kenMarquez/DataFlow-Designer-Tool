@@ -1,8 +1,9 @@
 import {contrastColor} from "./utils";
 import {colorByType, themes} from "./theme";
+import {addColumnIcon, deleteIcon, getDeleteIcon} from "./icons";
 
 const {widget} = figma;
-const {useSyncedState, usePropertyMenu, AutoLayout, Input} = widget;
+const {useSyncedState, usePropertyMenu, AutoLayout, Input, SVG} = widget;
 
 
 function Widget() {
@@ -18,8 +19,6 @@ function Widget() {
     const [size, setSize] = useSyncedState('size', 'medium');
     const [currentTheme, setCurrentTheme] = useSyncedState('currentTheme', 'default');
 
-    // SVG icon for adding a column
-    const addColumnIcon = `<svg width="24" height="24" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg"><rect x="10" y="4" width="4" height="16" fill="#FFFFFF" /><rect x="4" y="10" width="16" height="4" fill="#FFFFFF" /></svg>`;
 
     // Property menu setup for widget customization
     usePropertyMenu([
@@ -114,15 +113,16 @@ function Widget() {
         setTable({...table, name});
     };
 
+
     // Style settings for different widget sizes
     const sizeStyles = {
         // Styles for 'small' size
         small: {
-            widget: {width: 600, height: 'hug-contents'},
+            widget: {width: 650, height: 'hug-contents'},
             text: {fontFamily: 'IBM Plex Mono', fontSize: 20, fontWeight: 'normal'},
             rowHeight: 50,
             typeWidth: 120,
-            fieldWidth: 280,
+            fieldWidth: 220,
             padding: 30
         },
         // Styles for 'medium' size
@@ -219,6 +219,10 @@ function Widget() {
                                width={'fill-parent'}
                                fill={theme.textColor}
                                onTextEditEnd={({characters}) => changeColumnDescription(index, characters)}/>
+                        <SVG
+                            src={getDeleteIcon(size)}
+                            onClick={() => removeColumn(index)}
+                        />
                     </AutoLayout>
                 ) as FigmaVirtualNode<any> | FigmaDeclarativeChildren<any>[] | string | false)}
             </AutoLayout>
