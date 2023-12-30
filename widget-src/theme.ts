@@ -61,12 +61,24 @@ export const themes : Record<string, Theme> = {
 // Color mapping for different data types
 export const colorByType = {
     string: '#28A745', // Green for strings
+    text: '#28A745', // Green for text, similar to string
     number: '#007BFF', // Blue for numbers
+    integer: '#007BFF', // Blue for integer
+    numeric: '#007BFF', // Blue for numeric, similar to number
     boolean: '#FFC107', // Yellow for booleans
     date: '#DC3545', // Red for dates
+    datetime: '#DC3545', // Red for datetime, similar to date
+    timestamp: '#DC3545', // Red for timestamps, similar to date
     object: '#6610F2', // Purple for objects
     array: '#17A2B8', // Cyan for arrays
     function: '#FD7E14', // Orange for functions
+    uuid: '#20C997', // Teal for UUIDs
     undefined: '#6C757D', // Grey for undefined
     null: '#343A40', // Black for null
+    bigint: '#007BFF', // Blue for bigint, similar to number
+    float: '#007BFF', // Blue for floating-point numbers
+    double: '#007BFF', // Blue for double precision numbers
+    decimal: '#007BFF', // Blue for decimal precision numbers
+    char: '#28A745', // Green for char, similar to string
+    varchar: '#28A745', // Green for varchar, similar to string
 };
